@@ -3,7 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package customer_package;
-
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
 /**
  *
  * @author manuk
@@ -13,10 +21,54 @@ public class customer_home extends javax.swing.JFrame {
     /**
      * Creates new form customer_home
      */
-    public customer_home() {
-        initComponents();
+    Map<String, ImageIcon> imageMap;
+    JList listdata;
+    
+    private JList calc(){
+        String[] nameList = {"Mario", "Luigi", "Bowser", "Koopa", "Princess"};
+        imageMap = createImageMap(nameList);
+        listdata = new JList(nameList);
+        listdata.setCellRenderer(new ResaturentRenderer());
+        System.out.println(listdata);
+        return listdata;
     }
+    
+    public customer_home() {
+        calc();
+        initComponents();
+          }
+    private Map<String, ImageIcon> createImageMap(String[] list) {
+        Map<String, ImageIcon> map = new HashMap<>();
+        for (String s : list) {
+            try {
+                map.put(s,new ImageIcon(new URL("http://i.stack.imgur.com/f4T4l.png")));
+            } catch (Exception ex) {
+                Logger.getLogger(customer_home.class.getName()).log(Level.SEVERE, null, ex);
+            }
+         
+        }  
+        System.out.println(map.toString());
+        return map;
+    }
+    
+    public class ResaturentRenderer extends DefaultListCellRenderer
+    {
+        Font font = new Font("helvitica", Font.BOLD, 24);
+        @Override
+        public Component getListCellRendererComponent(
+                JList list, Object value, int index,
+                boolean isSelected, boolean cellHasFocus) {
 
+            JLabel label = (JLabel) super.getListCellRendererComponent(
+                    list, value, index, isSelected, cellHasFocus);
+            label.setIcon(imageMap.get((String) value));
+            label.setHorizontalTextPosition(JLabel.RIGHT);
+            label.setFont(font);
+            return label;
+        }
+
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,9 +80,8 @@ public class customer_home extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        RPanel = new javax.swing.JPanel();
+        RSPanel = new javax.swing.JScrollPane(listdata);
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList<>();
@@ -60,29 +111,26 @@ public class customer_home extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(10, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jList1);
+        RSPanel.setDoubleBuffered(true);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout RPanelLayout = new javax.swing.GroupLayout(RPanel);
+        RPanel.setLayout(RPanelLayout);
+        RPanelLayout.setHorizontalGroup(
+            RPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(RSPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+        RPanelLayout.setVerticalGroup(
+            RPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(RSPanel)
+                .addContainerGap())
         );
 
         jList2.setModel(new javax.swing.AbstractListModel<String>() {
@@ -113,7 +161,7 @@ public class customer_home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(RPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(31, 31, 31)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -126,7 +174,7 @@ public class customer_home extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(RPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
@@ -170,13 +218,12 @@ public class customer_home extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JPanel RPanel;
+    private javax.swing.JScrollPane RSPanel;
     private javax.swing.JList<String> jList2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }
