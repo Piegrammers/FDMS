@@ -4,6 +4,7 @@
  */
 package login_package;
 
+import java.sql.*;
 
 /**
  *
@@ -74,6 +75,39 @@ public class user_type extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        Connection conn=null;
+try {
+    String driverName="oracle.jdbc.driver.OracleDriver";
+    Class.forName(driverName);
+    System.out.println("loaded");
+//DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+    String serverName="localhost";
+    String serverPort="1521";
+    String sid="ORCL";
+    String url="jdbc:oracle:thin:@"+serverName+":"+serverPort+":"+sid;
+    String username="scott";
+    String password="tiger";
+    conn=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", username,password);
+    System.out.println("Successfully connected to database.");
+    Statement st=conn.createStatement();
+    String sql="SELECT * FROM MASTER";
+    ResultSet rs=st.executeQuery(sql);
+    while(rs.next())
+    {
+        String accno=rs.getString(1);
+        String name=rs.getString(2);
+        System.out.println(accno+" : "+name);
+    }
+    st.close();
+    conn.close();
+}
+catch(ClassNotFoundException e){
+    System.out.println("Driver not found:"+e.getMessage());
+}
+catch(SQLException e) {
+    System.out.println("Could not connect to database."+e.getMessage());
+}
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
